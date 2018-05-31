@@ -12,7 +12,7 @@ parameters:
   displayName: Kafka Volume Capacity
   name: KAFKA_VOLUME_CAPACITY
   required: true
-  value: 1Gi
+  value: 20Gi
 - description: Image repository name
   displayName: Repository Name
   name: IMAGE_REPO_NAME
@@ -24,7 +24,7 @@ parameters:
 - description: Kafka Version
   displayName: Kafka Version
   name: KAFKA_VERSION
-  value: "0.11.0.0"
+  value: "1.1.0"
 objects:
 - apiVersion: v1
   kind: Service
@@ -106,7 +106,7 @@ objects:
           image: ${IMAGE_REPO_NAME}/${IMAGE_NAME}:latest
           imagePullPolicy: Always
           command:
-          - /opt/kafka_2.11-${KAFKA_VERSION}/kafka_run.sh
+          - /opt/kafka/kafka_run.sh
           ports:
           - containerPort: 9092
             name: kafka
@@ -115,7 +115,7 @@ objects:
           terminationMessagePath: /dev/termination-log
           terminationMessagePolicy: File
           volumeMounts:
-          - mountPath: /tmp/kafka/
+          - mountPath: /var/lib/kafka
             name: kafka-storage
         dnsPolicy: ClusterFirst
         restartPolicy: Always
@@ -150,7 +150,9 @@ objects:
           image: ${IMAGE_REPO_NAME}/${IMAGE_NAME}:latest
           imagePullPolicy: Always
           command:
-          - ./zookeeper_run.sh
+          - /opt/kafka/bin/zookeeper-server-start.sh
+          args:
+          - /opt/kafka/config/zookeeper.properties
           ports:
           - containerPort: 2181
             name: clientport

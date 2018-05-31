@@ -4,7 +4,8 @@ RUN dnf -y install which java-1.8.0-openjdk libaio python gettext hostname iputi
 
 # set Scala and Kafka version
 ENV SCALA_VERSION=2.11
-ENV KAFKA_VERSION=0.11.0.0
+#ENV KAFKA_VERSION=0.11.0.0
+ENV KAFKA_VERSION=1.1.0
 # set Kafka home folder
 ENV KAFKA_HOME=/opt/kafka
 
